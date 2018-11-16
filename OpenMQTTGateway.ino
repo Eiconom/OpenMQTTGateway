@@ -793,10 +793,7 @@ void stateMeasures(){
           modules = modules  + ZmqttDiscovery;
       #endif
       SYSdata["modules"] = modules;
-      trc(modules);
-      char JSONmessageBuffer[100];
-      SYSdata.printTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
-      pub(subjectSYStoMQTT,JSONmessageBuffer);
+      pub(subjectSYStoMQTT,SYSdata);
     }
 }
 #endif
@@ -1016,6 +1013,14 @@ void trc(double msg){
 
 void trc(float msg){
   #ifdef TRACE
+  Serial.println(msg);
+  #endif
+}
+
+void trc(JsonObject& data){
+  #ifdef TRACE
+  char msg[JSON_MSG_BUFFER];
+  data.printTo(msg, sizeof(msg));
   Serial.println(msg);
   #endif
 }
